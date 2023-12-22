@@ -20,7 +20,7 @@ My HTML looks like this so far:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>###FILL THIS OUT###</title>
+    <title>Result</title>
     <script src="https://unpkg.com/vue@next"></script>
 </head>
 <body>
@@ -32,5 +32,5 @@ My HTML looks like this so far:
 
 Fill out the ###FILL THIS OUT### parts and use the async mounted method I provided.
 Provide fully functional code.
-Make sure variables that are needed to render the HTML are not null since the data is loaded asynchronously.
+Make sure variables that are needed to render the HTML are not null since the data is loaded asynchronously. The check must be on a lower level than on the <div id="app"> tag.
 Respond only with the finished code, no explanation before or after the code.
