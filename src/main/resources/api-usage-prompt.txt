@@ -1,0 +1,1 @@
+Somebody asks for "#QUERY#", what API request needs to be made?  Only respond with the filled out request URL please.

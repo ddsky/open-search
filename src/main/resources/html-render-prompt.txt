@@ -1,0 +1,36 @@
+Represent the API response in HTML to display the results to a user. The HTML should use Vue3 and import the response JSON file called 'response.json'. The mounted method to load the response data looks like this:
+```javascript
+async mounted() {
+            try {
+                const response = await fetch('response.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                this.jsonData = await response.json();
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+```
+
+My HTML looks like this so far:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>###FILL THIS OUT###</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="app">
+###FILL THIS OUT###
+</body>
+</html>
+```
+
+Fill out the ###FILL THIS OUT### parts and use the async mounted method I provided.
+Provide fully functional code.
+Make sure variables that are needed to render the HTML are not null since the data is loaded asynchronously.
+Respond only with the finished code, no explanation before or after the code.
