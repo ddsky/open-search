@@ -183,8 +183,8 @@ public class Searcher {
 
         String htmlResponse;
         if (templateJson != null) {
-            LOGGER.info("found HTML template in database");
             htmlResponse = templateJson.tryGetString("html");
+            LOGGER.info("found HTML template in database: " + StringHelper.shortenEllipsis(htmlResponse, 100));
         } else {
             JsonArray messages = new JsonArray();
 

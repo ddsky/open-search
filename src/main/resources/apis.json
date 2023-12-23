@@ -135,11 +135,6 @@
     "authentication_config_key": ""
   },
   {
-    "description": "Searches for the lyrics of an artist and song title.",
-    "url": "https://api.lyrics.ovh/v1/:artist/:title",
-    "authentication_config_key": ""
-  },
-  {
     "description": "Chronicling America provides access to information about historic newspapers and select digitized newspaper pages. To encourage a wide range of potential uses, we designed several different views of the data we provide, all of which are publicly visible. Each uses common Web protocols, and access is not restricted in any way. You do not need to apply for a special key to use them. Together they make up an extensive application programming interface (API) which you can use to explore all of our data in many ways.",
     "url": "https://chroniclingamerica.loc.gov/search/titles/results/?terms=oakland&format=json&page=5",
     "authentication_config_key": ""
@@ -151,7 +146,7 @@
   },
   {
     "description": "Looks up a country and zip code.",
-    "url": "http://api.zippopotam.us/us/98121",
+    "url": "http://api.zippopotam.us/{COUNTRY_CODE}/{ZIP_CODE}",
     "authentication_config_key": ""
   },
   {
@@ -160,18 +155,13 @@
     "authentication_config_key": ""
   },
   {
-    "description": "Returns a random yes or no.",
-    "url": "https://yesno.wtf/api",
-    "authentication_config_key": ""
-  },
-  {
-    "description": "Returns the latest SpaceX launch.",
-    "url": "https://api.spacexdata.com/v3/launches/latest",
+    "description": "Returns the next SpaceX launch.",
+    "url": "https://api.spacexdata.com/v3/launches/next",
     "authentication_config_key": ""
   },
   {
     "description": "Returns the sunrise and sunset for a longitude and latitude.",
-    "url": "https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400",
+    "url": "https://api.sunrise-sunset.org/json?lat={LATITUDE}&lng=-{LONGITUDE}",
     "authentication_config_key": ""
   },
   {
@@ -247,6 +237,11 @@
   {
     "description": "Weather History",
     "url": "https://archive-api.open-meteo.com/v1/era5?latitude=52.52&longitude=13.41&start_date=2021-01-01&end_date=2021-12-31&hourly=temperature_2m",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Groundhog Weather prediction by year",
+    "url": "https://groundhog-day.com/api/v1/predictions?year={YEAR}",
     "authentication_config_key": ""
   },
   {
