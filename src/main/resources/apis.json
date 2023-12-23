@@ -1,0 +1,263 @@
+[
+  {
+    "description": "Facts about cats",
+    "url": "https://cat-fact.herokuapp.com/facts/",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "List all dog breeds.",
+    "url": "https://dog.ceo/api/breeds/list/all",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns facts on pet food using barcode.",
+    "url": "https://world.openpetfoodfacts.org/api/v0/product/20106836.json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Searches for product details using barcode.",
+    "url": "https://world.openfoodfacts.org/api/v0/product/737628064502.json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Bikewise is a place to learn about and report bike crashes, hazards, and thefts.",
+    "url": "https://bikewise.org:443/api/v2/incidents?page=1&proximity_square=100",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "The API allows requesting information on one or more books using ISBNs, OCLC Numbers, LCCNs and OLIDs (Open Library IDs).",
+    "url": "https://openlibrary.org/api/books?bibkeys=ISBN:0201558025,LCCN:93005405&format=json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "The Covers API provides a programmatic method to access the book covers and author photos available in the Open Library Covers Repository.",
+    "url": "http://covers.openlibrary.org/b/isbn/0385472579-S.jpg",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Search books on Open Library",
+    "url": "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of makes of cars",
+    "url": "https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of car manufacturers.",
+    "url": "https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Query the calendar for today.",
+    "url": "http://calapi.inadiutorium.cz/api/v0/en/calendars/general-en/today",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Query the calendar for tomorrow.",
+    "url": "http://calapi.inadiutorium.cz/api/v0/en/calendars/general-en/tomorrow",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Query the calendar for yesterday.",
+    "url": "http://calapi.inadiutorium.cz/api/v0/en/calendars/general-en/yesterday",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns the latest XKCD comic.",
+    "url": "https://xkcd.com/info.0.json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns the current Bitcoin price.",
+    "url": "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Registered domains search checks the lists of registered domains for names containing particular words/phrases/numbers or symbols.",
+    "url": "https://api.domainsdb.info/v1/domains/search?domain=postman&zone=com",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of earthquakes for a time period.",
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-01-01&endtime=2020-01-02",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of Game of Thrones characters.",
+    "url": "https://www.anapioficeandfire.com/api/characters",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of Game of Thrones books.",
+    "url": "https://www.anapioficeandfire.com/api/books",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of Game of Thrones houses.",
+    "url": "https://www.anapioficeandfire.com/api/houses",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "A simple API to predict the gender of a person given their name.",
+    "url": "https://api.genderize.io?name=mary",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Looks up the IP address of the requestor.",
+    "url": "https://api.ipify.org?format=json",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of jobs.",
+    "url": "http://api.dataatwork.org/v1/jobs",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a list of skills.",
+    "url": "http://api.dataatwork.org/v1/skills",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a random joke.",
+    "url": "https://official-joke-api.appspot.com/random_joke",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a random dad joke.",
+    "url": "https://icanhazdadjoke.com/",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "If you’re only interested in a Company’s logo, and don’t need any other data about the company, you can use our Logo API.",
+    "url": "https://logo.clearbit.com/:domain",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Searches for the lyrics of an artist and song title.",
+    "url": "https://api.lyrics.ovh/v1/:artist/:title",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Chronicling America provides access to information about historic newspapers and select digitized newspaper pages. To encourage a wide range of potential uses, we designed several different views of the data we provide, all of which are publicly visible. Each uses common Web protocols, and access is not restricted in any way. You do not need to apply for a special key to use them. Together they make up an extensive application programming interface (API) which you can use to explore all of our data in many ways.",
+    "url": "https://chroniclingamerica.loc.gov/search/titles/results/?terms=oakland&format=json&page=5",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "All the Pokémon data you'll ever need in one place",
+    "url": "https://pokeapi.co/api/v2/pokemon/ditto/",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Looks up a country and zip code.",
+    "url": "http://api.zippopotam.us/us/98121",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a Ron Swanson quote.",
+    "url": "https://ron-swanson-quotes.herokuapp.com/v2/quotes",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns a random yes or no.",
+    "url": "https://yesno.wtf/api",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns the latest SpaceX launch.",
+    "url": "https://api.spacexdata.com/v3/launches/latest",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Returns the sunrise and sunset for a longitude and latitude.",
+    "url": "https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Searches the TVMaze television search.",
+    "url": "http://api.tvmaze.com/search/shows?q=postman",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Searches for universities.",
+    "url": "http://universities.hipolabs.com/search?name=middle",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Gets all known website breaches.",
+    "url": "https://haveibeenpwned.com/api/v2/breaches",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Return a random affirmation",
+    "url": "https://www.affirmations.dev/",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Get a random quote",
+    "url": "https://api.quotable.io/quotes/random",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Search for video games",
+    "url": "https://api.gamebrain.co/games/search?query={SEARCH_QUERY}",
+    "authentication_config_key": "gamebrain"
+  },
+  {
+    "description": "Search for news",
+    "url": "https://api.worldnewsapi.com/search-news?query={SEARCH_QUERY}",
+    "authentication_config_key": "worldnewsapi"
+  },
+  {
+    "description": "Search for memes",
+    "url": "https://api.humorapi.com/memes/search?number=10&keywords={SEARCH_QUERY}",
+    "authentication_config_key": "humorapi"
+  },
+  {
+    "description": "Get a random meme",
+    "url": "https://api.humorapi.com/memes/random?keywords={SEARCH_QUERY}",
+    "authentication_config_key": "humorapi"
+  },
+  {
+    "description": "Get a random joke",
+    "url": "https://api.humorapi.com/jokes/random",
+    "authentication_config_key": "humorapi"
+  },
+  {
+    "description": "Search for jokes",
+    "url": "https://api.humorapi.com/jokes/search?number=10&keywords={KEYWORDS}&include-tags={INCLUDE_TAGS}&exclude-tags={EXCLUDE_TAGS}",
+    "authentication_config_key": "humorapi"
+  },
+  {
+    "description": "Search for recipes",
+    "url": "https://api.spoonacular.com/recipes/search?query={SEARCH_QUERY}",
+    "authentication_config_key": "spoonacular"
+  },
+  {
+    "description": "Weather Forecast",
+    "url": "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Weather History of Last 10 Days",
+    "url": "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&past_days=10&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Weather History",
+    "url": "https://archive-api.open-meteo.com/v1/era5?latitude=52.52&longitude=13.41&start_date=2021-01-01&end_date=2021-12-31&hourly=temperature_2m",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Search cocktail by name",
+    "url": "https://www.thecocktaildb.com/api/json/v1/1/search.php?s={COCKTAIL_NAME}",
+    "authentication_config_key": ""
+  },
+  {
+    "description": "Search cocktail by ingredient",
+    "url": "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={INGREDIENT}",
+    "authentication_config_key": ""
+  }
+]
+
