@@ -253,6 +253,11 @@
     "description": "Search cocktail by ingredient",
     "url": "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={INGREDIENT}",
     "authentication_config_key": ""
+  },
+  {
+    "description": "Find a random baby name for boys, girls, or neutral gender",
+    "url": "https://api.api-ninjas.com/v1/babynames?gender={boy,girl,neutral}",
+    "authentication_config_key": "apininjas"
   }
 ]
 
