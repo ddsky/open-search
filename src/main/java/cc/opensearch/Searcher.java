@@ -142,7 +142,7 @@ public class Searcher {
             } else {
                 apiUrl += "?";
             }
-            apiUrl += authentication.getLeft() + "=" + authentication.getRight();
+            apiUrl += authentication.getLeft() + "=" + UrlHelper.encodeParameter(authentication.getRight());
         }
 
         DocumentRetriever documentRetriever = new DocumentRetriever();
