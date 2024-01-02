@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open Search</title>
     <meta name="author" content="David Urbansky">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -45,7 +45,13 @@
 </div>
 
 <script>
-    const API_URL = 'api.opensearch.cc';
+    // if true https and wss will be used, for localhost, probably this should be false
+    // prod:
+    // const SECURE = true;
+    // const API_URL = 'api.opensearch.cc';
+    // dev:
+    const SECURE = false;
+    const API_URL = 'localhost:4567';
     const app = Vue.createApp({
         data() {
             return {
@@ -85,7 +91,13 @@
             }
         },
         mounted() {
-            this.socket = new WebSocket("ws://" + API_URL + "/socket");
+            let websocketUrl = API_URL + "/socket";
+            if (SECURE) {
+                websocketUrl = 'wss://' + websocketUrl;
+            } else {
+                websocketUrl = 'ws://' + websocketUrl;
+            }
+            this.socket = new WebSocket(websocketUrl);
 
             this.socket.onopen = (event) => {
                 console.log('connected to websocket, switching to websocket mode');
@@ -95,7 +107,7 @@
             this.socket.onmessage = (event) => {
                 console.log(event.data);
                 const messageContent = event.data;
-                if (messageContent.indexOf('<') != 1) {
+                if (messageContent.indexOf('<') < 0) {
                     this.addLogMessage(messageContent);
                 } else {
                     this.parseHtmlResult(messageContent);
@@ -135,7 +147,13 @@
             // search via the http API
             searchHttp() {
                 // axios.get('http://localhost:4567/search?query=' + encodeURIComponent(this.query))
-                axios.get('https://' + API_URL + '/search?query=' + encodeURIComponent(this.query))
+                let httpRequestUrl = API_URL + '/search?query=' + encodeURIComponent(this.query);
+                if (SECURE) {
+                    httpRequestUrl = 'https://' + httpRequestUrl;
+                } else {
+                    httpRequestUrl = 'http://' + httpRequestUrl;
+                }
+                axios.get(httpRequestUrl)
                     .then(response => {
                         this.parseHtmlResult(response.data);
                     })

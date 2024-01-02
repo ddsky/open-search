@@ -8,7 +8,9 @@ body {
 
 main {
     min-height: 500px;
+    margin-top: 30px;
 }
+
 main img, main video {
     max-width: 100%;
 }
@@ -20,6 +22,7 @@ main img, main video {
     justify-content: center;
     margin-bottom: 50px;
 }
+
 #logo img:nth-child(1) {
     max-width: 100px;
     margin-right: 10px;
@@ -34,15 +37,15 @@ main img, main video {
 
 #logo img.rotating:nth-child(1) {
     animation: rotateImage 2s infinite;
-    transform-origin: 50% 46%;
+    transform-origin: 50% 45%;
 }
 
 @keyframes rotateImage {
     0% {
-        transform: rotate(0deg);
+        transform: rotate(20deg);
     }
     100% {
-        transform: rotate(360deg);
+        transform: rotate(380deg);
     }
 }
 
@@ -87,6 +90,7 @@ main img, main video {
     height: 50px;
     cursor: pointer;
 }
+
 .search-bar button:last-of-type {
     border-radius: 0 10px 10px 0;
 }
