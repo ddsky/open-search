@@ -20,7 +20,7 @@ public class WebSocket {
         JsonObject jsonResponse;
         try {
             jsonResponse = Searcher.getInstance().search(message, session);
-            String html = HtmlRenderer.getInstance().renderHtml(jsonResponse);
+            String html = HtmlRenderer.getInstance().renderHtml(jsonResponse, session);
             session.getRemote().sendString(html);
         } catch (Exception e) {
             session.getRemote().sendString("Something went wrong");

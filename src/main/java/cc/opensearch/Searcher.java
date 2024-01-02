@@ -119,7 +119,11 @@ public class Searcher {
         userMessage.put("content", apiUsagePrompt.replace("#QUERY#", query));
         messages.add(userMessage);
 
-        return LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), "gpt-4-1106-preview", 4095);
+        String apiUrl = LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), 4095);
+
+        // make sure we only use the URL, not any explanation text
+        Optional<String> firstUrl = UrlHelper.extractUrls(apiUrl).stream().findFirst();
+        return firstUrl.orElse(null);
     }
 
     public JsonObject search(String query) throws Exception {
@@ -190,13 +194,13 @@ public class Searcher {
 
         if (caching) {
             apiResponse.put("_id", jsKey);
-            apiResponse.put("expires", System.currentTimeMillis() + TimeUnit.DAYS.toMillis(ConfigHolder.getInstance().getConfig().getInt("caching.duration_hours")));
+            apiResponse.put("expires", System.currentTimeMillis() + TimeUnit.HOURS.toMillis(ConfigHolder.getInstance().getConfig().getInt("caching.duration_hours")));
             apiResponse.put("source", apiUrl.replaceAll("\\?.*", ""));
             jsonDatabase.add(RESPONSES_COLLECTION, apiResponse);
         }
 
-        LOGGER.info("open ai returned: " + StringHelper.shortenEllipsis(apiResponse.toString(), 100));
-        LOGGER.debug("open ai returned: " + apiResponse);
+        LOGGER.info("LLM returned: " + StringHelper.shortenEllipsis(apiResponse.toString(), 100));
+        LOGGER.debug("LLM returned: " + apiResponse);
 
         return apiResponse;
     }

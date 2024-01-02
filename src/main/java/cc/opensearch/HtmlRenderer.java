@@ -68,7 +68,9 @@ public class HtmlRenderer {
         if (templateJson != null && templateJson.tryGetLong("expires", 0L) > System.currentTimeMillis()) {
             htmlResponse = templateJson.tryGetString("html");
             LOGGER.info("found HTML template in database: " + StringHelper.shortenEllipsis(htmlResponse, 100));
-            session.getRemote().sendString("found cached HTML template");
+            if (session != null) {
+                session.getRemote().sendString("found cached HTML template");
+            }
         } else {
             JsonArray messages = new JsonArray();
 
@@ -85,7 +87,7 @@ public class HtmlRenderer {
             if (session != null) {
                 session.getRemote().sendString("asking LLM to render HTML");
             }
-            htmlResponse = LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), "gpt-4-1106-preview", 4095);
+            htmlResponse = LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), 4095);
 
             LOGGER.info("LLM returned HTML: " + StringHelper.shortenEllipsis(htmlResponse.toString(), 100));
             LOGGER.debug("LLM returned HTML: " + htmlResponse);
@@ -94,19 +96,24 @@ public class HtmlRenderer {
             template.put("html", htmlResponse);
             template.put("source", apiResponse.tryGetString("source"));
             if (caching) {
-                template.put("expires", System.currentTimeMillis() + TimeUnit.DAYS.toMillis(ConfigHolder.getInstance().getConfig().getInt("caching.duration_hours")));
+                template.put("expires", System.currentTimeMillis() + TimeUnit.HOURS.toMillis(ConfigHolder.getInstance().getConfig().getInt("caching.duration_hours")));
                 jsonDatabase.add(TEMPLATES_COLLECTION, template);
             }
         }
 
-        long responseId = System.currentTimeMillis();
-        String responseJsonFileName = "response" + responseId + ".json";
-        FileHelper.writeToFile("data/" + responseJsonFileName, apiResponse.toString());
         String html = StringHelper.getSubstringBetween(htmlResponse, "```html", "```");
+        if (html.isEmpty()) {
+            html = htmlResponse;
+        }
 
         // replace response section with actual response
-        html = PatternHelper.compileOrGet("const response.*?response.json\\(\\);", Pattern.DOTALL).matcher(html).replaceAll("#__#;");
-        html = html.replace("#__#", "this.jsonData=" + apiResponse);
+        html = PatternHelper.compileOrGet("<script>.*</script>", Pattern.DOTALL).matcher(html).replaceAll("");
+        html = html.replace("</body>",
+                "<script>\n" + "const app = Vue.createApp({\n" + "  data() {\n" + "    return {\n" + "      jsonData: {},\n" + "    };\n" + "  },\n" + "  mounted() {\n"
+                        + "    this.jsonData=" + apiResponse + ";\n" + "  },\n" + "}).mount('#app');\n" + "</script></body>");
+
+        // close gap between </div> and <script> so we can parse it easier in frontend
+        html = PatternHelper.compileOrGet("</div>[ \n\t\r]*?<script>", Pattern.DOTALL).matcher(html).replaceAll("</div><script>");
 
         return html;
     }

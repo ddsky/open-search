@@ -45,12 +45,13 @@ public class LargeLanguageModelApi {
         }
     }
 
-    public String chat(JsonArray messages, double temperature, AtomicInteger usedTokens, String modelName, int maxTokens) throws Exception {
+    public String chat(JsonArray messages, double temperature, AtomicInteger usedTokens, int maxTokens) throws Exception {
+        Configuration config = ConfigHolder.getInstance().getConfig();
         if (openAiApi != null) {
-            return openAiApi.chat(messages, temperature, usedTokens, modelName, maxTokens);
+            return openAiApi.chat(messages, temperature, usedTokens, config.getString("api.openai.model"), maxTokens);
         }
         if (togetherApi != null) {
-            return togetherApi.chat(messages, temperature, usedTokens, modelName, maxTokens);
+            return togetherApi.chat(messages, temperature, usedTokens, config.getString("api.together.model"), maxTokens);
         }
         return null;
     }
