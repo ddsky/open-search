@@ -17,8 +17,7 @@ import java.io.IOException;
 public class WebSocket {
     @OnWebSocketMessage
     public void handleTextMessage(Session session, String message) throws IOException {
-        System.out.println("New Text Message Received: " + message);
-        JsonObject jsonResponse = null;
+        JsonObject jsonResponse;
         try {
             jsonResponse = Searcher.getInstance().search(message, session);
             String html = HtmlRenderer.getInstance().renderHtml(jsonResponse);

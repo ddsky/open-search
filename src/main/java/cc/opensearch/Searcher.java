@@ -17,6 +17,7 @@ import ws.palladian.retrieval.DocumentRetriever;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,9 +28,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 public class Searcher {
     private static final Logger LOGGER = Logger.getLogger(Searcher.class);
+    private final boolean caching;
     private final JsonDatabase jsonDatabase;
     private static final String RESPONSES_COLLECTION = "responses";
-    private static final String TEMPLATES_COLLECTION = "templates";
 
     private final String apiDescriptions;
 
@@ -47,9 +48,14 @@ public class Searcher {
     }
 
     private Searcher() {
-        jsonDatabase = new JsonDatabase("data", 1000);
-        jsonDatabase.createIndex(RESPONSES_COLLECTION, "_id");
-        jsonDatabase.createIndex(TEMPLATES_COLLECTION, "source");
+        caching = ConfigHolder.getInstance().getConfig().getBoolean("caching.json", false);
+
+        if (caching) {
+            jsonDatabase = new JsonDatabase("data", 1000);
+            jsonDatabase.createIndex(RESPONSES_COLLECTION, "_id");
+        } else {
+            jsonDatabase = null;
+        }
 
         ClassLoader classLoader = getClass().getClassLoader();
         JsonArray availableApis = JsonArray.tryParse(FileHelper.readFileToString(classLoader.getResourceAsStream("apis.json")));
@@ -124,8 +130,12 @@ public class Searcher {
         String jsKey = StringHelper.makeSafeName(query);
 
         // see whether we have a response for the query already
-        JsonObject apiResponse = jsonDatabase.getOne(RESPONSES_COLLECTION, "_id", jsKey);
-        if (apiResponse != null) {
+        JsonObject apiResponse = null;
+
+        if (caching) {
+            apiResponse = jsonDatabase.getOne(RESPONSES_COLLECTION, "_id", jsKey);
+        }
+        if (apiResponse != null && apiResponse.tryGetLong("expires", 0L) > System.currentTimeMillis()) {
             if (session != null) {
                 session.getRemote().sendString("Found a cached response");
             }
@@ -177,10 +187,13 @@ public class Searcher {
             LOGGER.error("API response not valid: " + textResponse);
             return null;
         }
-        apiResponse.put("_id", jsKey);
-        apiResponse.put("source", apiUrl.replaceAll("\\?.*", ""));
 
-        jsonDatabase.add(RESPONSES_COLLECTION, apiResponse);
+        if (caching) {
+            apiResponse.put("_id", jsKey);
+            apiResponse.put("expires", System.currentTimeMillis() + TimeUnit.DAYS.toMillis(ConfigHolder.getInstance().getConfig().getInt("caching.duration_hours")));
+            apiResponse.put("source", apiUrl.replaceAll("\\?.*", ""));
+            jsonDatabase.add(RESPONSES_COLLECTION, apiResponse);
+        }
 
         LOGGER.info("open ai returned: " + StringHelper.shortenEllipsis(apiResponse.toString(), 100));
         LOGGER.debug("open ai returned: " + apiResponse);
