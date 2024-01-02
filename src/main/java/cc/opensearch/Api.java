@@ -13,6 +13,8 @@ import static spark.Spark.*;
  **/
 public class Api {
     public static void main(String[] args) {
+        webSocket("/socket", WebSocket.class);
+
         // enable CORS
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
@@ -33,7 +35,7 @@ public class Api {
 
             return "OK";
         });
-
+        
         get("/responses/:id", (req, res) -> {
             res.type("application/json");
             String responseId = req.params(":id");
@@ -42,7 +44,7 @@ public class Api {
         get("/search", (req, res) -> {
             res.type("text/html");
             JsonObject jsonResponse = Searcher.getInstance().search(req.queryParams("query"));
-            String html = Searcher.getInstance().renderHtml(jsonResponse);
+            String html = HtmlRenderer.getInstance().renderHtml(jsonResponse);
             return html;
         });
     }
