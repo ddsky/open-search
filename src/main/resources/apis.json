@@ -11,12 +11,12 @@
   },
   {
     "description": "Returns facts on pet food using barcode.",
-    "url": "https://world.openpetfoodfacts.org/api/v0/product/20106836.json",
+    "url": "https://world.openpetfoodfacts.org/api/v0/product/{BARCODE}.json",
     "authentication_config_key": ""
   },
   {
     "description": "Searches for product details using barcode.",
-    "url": "https://world.openfoodfacts.org/api/v0/product/737628064502.json",
+    "url": "https://world.openfoodfacts.org/api/v0/product/{BARCODE}.json",
     "authentication_config_key": ""
   },
   {
@@ -26,17 +26,17 @@
   },
   {
     "description": "The API allows requesting information on one or more books using ISBNs, OCLC Numbers, LCCNs and OLIDs (Open Library IDs).",
-    "url": "https://openlibrary.org/api/books?bibkeys=ISBN:0201558025,LCCN:93005405&format=json",
+    "url": "https://openlibrary.org/api/books?bibkeys=ISBN:{ISBN}&format=json",
     "authentication_config_key": ""
   },
   {
     "description": "The Covers API provides a programmatic method to access the book covers and author photos available in the Open Library Covers Repository.",
-    "url": "http://covers.openlibrary.org/b/isbn/0385472579-S.jpg",
+    "url": "http://covers.openlibrary.org/b/isbn/{ISBN}-S.jpg",
     "authentication_config_key": ""
   },
   {
     "description": "Search books on Open Library",
-    "url": "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+    "url": "http://openlibrary.org/search.json?q={QUERY}",
     "authentication_config_key": ""
   },
   {
@@ -166,7 +166,7 @@
   },
   {
     "description": "Searches the TVMaze television search.",
-    "url": "http://api.tvmaze.com/search/shows?q=postman",
+    "url": "http://api.tvmaze.com/search/shows?q={NAME_OF_SHOW}",
     "authentication_config_key": ""
   },
   {
@@ -196,7 +196,7 @@
   },
   {
     "description": "Search for news",
-    "url": "https://api.worldnewsapi.com/search-news?query={SEARCH_QUERY}",
+    "url": "https://api.worldnewsapi.com/search-news?text={SEARCH_QUERY}&sort=publish-time&sort-direction=DESC",
     "authentication_config_key": "worldnewsapi"
   },
   {
@@ -215,7 +215,7 @@
     "authentication_config_key": "humorapi"
   },
   {
-    "description": "Search for jokes",
+    "description": "Search for jokes. Keywords can be anything from topic (e.g. religious, nerdy, food...( to a name (e.g. Chuck Norris, yo momma)",
     "url": "https://api.humorapi.com/jokes/search?number=10&keywords={KEYWORDS}&include-tags={INCLUDE_TAGS}&exclude-tags={EXCLUDE_TAGS}",
     "authentication_config_key": "humorapi"
   },
