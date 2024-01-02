@@ -3,23 +3,21 @@ package cc.opensearch;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.websocket.api.Session;
 import ws.palladian.helper.ConfigHolder;
 import ws.palladian.helper.UrlHelper;
 import ws.palladian.helper.collection.MapBuilder;
 import ws.palladian.helper.io.FileHelper;
-import ws.palladian.helper.nlp.PatternHelper;
 import ws.palladian.helper.nlp.StringHelper;
 import ws.palladian.persistence.json.JsonArray;
 import ws.palladian.persistence.json.JsonDatabase;
 import ws.palladian.persistence.json.JsonObject;
 import ws.palladian.retrieval.DocumentRetriever;
-import ws.palladian.retrieval.search.web.OpenAiApi;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 /**
  * The Searcher takes a query, picks an API and returns the response.
@@ -32,13 +30,12 @@ public class Searcher {
     private final JsonDatabase jsonDatabase;
     private static final String RESPONSES_COLLECTION = "responses";
     private static final String TEMPLATES_COLLECTION = "templates";
-    private final OpenAiApi openAiApi;
+
     private final String apiDescriptions;
 
     private final String apiUsagePrompt;
-    private final String htmlRenderingPrompt;
 
-    // some APIs need authentication, keep a map of domain => pair of parameter + key in here
+    /** some APIs need authentication, keep a map of domain => pair of parameter + key in here */
     private final Map<String, Pair<String, String>> apiAuthentication = new HashMap<>();
 
     static class SingletonHolder {
@@ -50,8 +47,6 @@ public class Searcher {
     }
 
     private Searcher() {
-        openAiApi = new OpenAiApi(ConfigHolder.getInstance().getConfig());
-
         jsonDatabase = new JsonDatabase("data", 1000);
         jsonDatabase.createIndex(RESPONSES_COLLECTION, "_id");
         jsonDatabase.createIndex(TEMPLATES_COLLECTION, "source");
@@ -61,7 +56,6 @@ public class Searcher {
         availableApis = filterApisIfNoAuthenticationAvailable(availableApis);
         apiDescriptions = createApiDescriptions(availableApis, FileHelper.readFileToString(classLoader.getResourceAsStream("api-availability-prompt.txt")));
         apiUsagePrompt = FileHelper.readFileToString(classLoader.getResourceAsStream("api-usage-prompt.txt"));
-        htmlRenderingPrompt = FileHelper.readFileToString(classLoader.getResourceAsStream("html-render-prompt.txt"));
     }
 
     private String createApiDescriptions(JsonArray availableApis, String prompt) {
@@ -103,17 +97,10 @@ public class Searcher {
         return filteredApis;
     }
 
-    public JsonObject search(String query) throws Exception {
-        String jsKey = StringHelper.makeSafeName(query);
-
-        // see whether we have a response for the query already
-        JsonObject apiResponse = jsonDatabase.getOne(RESPONSES_COLLECTION, "_id", jsKey);
-        if (apiResponse != null) {
-            LOGGER.info("found response in database");
-            return apiResponse;
-        }
-        apiResponse = new JsonObject();
-
+    /**
+     * Find the API that is best suited for the query.
+     */
+    private String getApiUrl(String query) throws Exception {
         JsonArray messages = new JsonArray();
 
         JsonObject systemMessage = new JsonObject();
@@ -126,11 +113,37 @@ public class Searcher {
         userMessage.put("content", apiUsagePrompt.replace("#QUERY#", query));
         messages.add(userMessage);
 
-        String apiUrl = openAiApi.chat(messages, 0., new AtomicInteger(), "gpt-4-1106-preview", 4095);
+        return LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), "gpt-4-1106-preview", 4095);
+    }
 
+    public JsonObject search(String query) throws Exception {
+        return search(query, null);
+    }
+
+    public JsonObject search(String query, Session session) throws Exception {
+        String jsKey = StringHelper.makeSafeName(query);
+
+        // see whether we have a response for the query already
+        JsonObject apiResponse = jsonDatabase.getOne(RESPONSES_COLLECTION, "_id", jsKey);
+        if (apiResponse != null) {
+            if (session != null) {
+                session.getRemote().sendString("Found a cached response");
+            }
+            LOGGER.info("found response in database");
+            return apiResponse;
+        }
+        apiResponse = new JsonObject();
+
+        String apiUrl = getApiUrl(query);
         if (apiUrl == null || !apiUrl.startsWith("http")) {
             LOGGER.error("AI response not a URL: " + apiUrl);
+            if (session != null) {
+                session.getRemote().sendString("Could not find API to resolve query");
+            }
             return null;
+        }
+        if (session != null) {
+            session.getRemote().sendString("Using API: " + apiUrl);
         }
 
         // see whether we have authentication information for this domain
@@ -175,77 +188,11 @@ public class Searcher {
         return apiResponse;
     }
 
-    public String renderHtml(JsonObject apiResponse) throws Exception {
-        if (apiResponse == null) {
-            return null;
-        }
-        JsonObject templateJson = jsonDatabase.getOne(TEMPLATES_COLLECTION, "source", apiResponse.tryGetString("source"));
-
-        String htmlResponse;
-        if (templateJson != null) {
-            htmlResponse = templateJson.tryGetString("html");
-            LOGGER.info("found HTML template in database: " + StringHelper.shortenEllipsis(htmlResponse, 100));
-        } else {
-            JsonArray messages = new JsonArray();
-
-            JsonObject systemMessage = new JsonObject();
-            systemMessage.put("role", "system");
-            systemMessage.put("content", "We have the following API response:\n\n" + simplify(apiResponse));
-            messages.add(systemMessage);
-
-            JsonObject userMessage = new JsonObject();
-            userMessage.put("role", "user");
-            userMessage.put("content", htmlRenderingPrompt);
-            messages.add(userMessage);
-
-            htmlResponse = openAiApi.chat(messages, 0., new AtomicInteger(), "gpt-4-1106-preview", 4095);
-
-            LOGGER.info("open ai returned HTML: " + StringHelper.shortenEllipsis(htmlResponse.toString(), 100));
-            LOGGER.debug("open ai returned HTML: " + htmlResponse);
-
-            JsonObject template = new JsonObject();
-            template.put("html", htmlResponse);
-            template.put("source", apiResponse.tryGetString("source"));
-            jsonDatabase.add(TEMPLATES_COLLECTION, template);
-        }
-
-        long responseId = System.currentTimeMillis();
-        String responseJsonFileName = "response" + responseId + ".json";
-        FileHelper.writeToFile("data/" + responseJsonFileName, apiResponse.toString());
-        String html = StringHelper.getSubstringBetween(htmlResponse, "```html", "```");
-
-        // replace response section with actual response
-        html = PatternHelper.compileOrGet("const response.*?response.json\\(\\);", Pattern.DOTALL).matcher(html).replaceAll("#__#;");
-        html = html.replace("#__#", "this.jsonData=" + apiResponse);
-
-        return html;
-    }
-
-    /**
-     * Simplify the API response to make it shorter since we send it to the LLM and it costs tokens.
-     */
-    private String simplify(JsonObject apiResponse) {
-        // shorten all arrays on the root level to max 5 elements
-        for (String key : apiResponse.keySet()) {
-            if (apiResponse.tryGetJsonArray(key) != null) {
-                JsonArray array = apiResponse.tryGetJsonArray(key);
-                if (array.size() > 5) {
-                    JsonArray newArray = new JsonArray();
-                    for (int i = 0; i < 5; i++) {
-                        newArray.add(array.get(i));
-                    }
-                    apiResponse.put(key, newArray);
-                }
-            }
-        }
-        return apiResponse.toString();
-    }
-
     public static void main(String[] args) throws Exception {
         Searcher searcher = new Searcher();
-        JsonObject search = searcher.search("what cocktails can I make with rum?");
-        System.out.println(search);
-        String html = searcher.renderHtml(search);
+        JsonObject searchResponse = searcher.search("what cocktails can I make with rum?");
+        System.out.println(searchResponse);
+        String html = HtmlRenderer.getInstance().renderHtml(searchResponse);
         System.out.println(html);
     }
 }
