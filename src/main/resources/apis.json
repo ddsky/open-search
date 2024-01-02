@@ -225,6 +225,11 @@
     "authentication_config_key": "spoonacular"
   },
   {
+    "description": "Search for recipes",
+    "url": "https://api.spoonacular.com/recipes/complexSearch?query={SEARCH_QUERY}&cuisine={CUISINE}&diet={DIET}&excludeIngredients={EXCLUDE_INGREDIENTS}&intolerances={INTOLERANCES}&number={NUMBER}&minCarbs={MIN_CARBS}&maxCarbs={MAX_CARBS}&minProtein={MIN_PROTEIN}&maxProtein={MAX_PROTEIN}&minCalories={MIN_CALORIES}&maxCalories={MAX_CALORIES}&minFat={MIN_FAT}&maxFat={MAX_FAT}",
+    "authentication_config_key": "spoonacular"
+  },
+  {
     "description": "Weather Forecast",
     "url": "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m",
     "authentication_config_key": ""
