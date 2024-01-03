@@ -66,6 +66,7 @@
                 loading: false,
                 query: '',
                 searchLog: null,
+                writingLog: false,
                 exampleQueries: [
                     'weather in London, UK tomorrow',
                     'tell me a random cat fact',
@@ -124,11 +125,31 @@
                 this.socket.send(this.query);
             },
             addLogMessage(message) {
-                if (this.searchLog == null) {
-                    this.searchLog = message;
-                } else {
-                    this.searchLog += ', ' + message;
+                // is log is being written, wait until it is finished
+                if (this.writingLog) {
+                    setTimeout(() => {
+                        this.addLogMessage(message);
+                    }, 100);
+                    return;
                 }
+                this.writingLog = true;
+
+                if (this.searchLog == null) {
+                    this.searchLog = '';
+                } else {
+                    this.searchLog += ', ';
+                }
+                let index = 0;
+                const typeWriterEffect = () => {
+                    if (index < message.length) {
+                        this.searchLog += message.charAt(index);
+                        index++;
+                        setTimeout(typeWriterEffect, 40);
+                    } else {
+                        this.writingLog = false;
+                    }
+                };
+                typeWriterEffect();
             },
             randomSearch() {
                 // pick a random query from the exampleQueries array
