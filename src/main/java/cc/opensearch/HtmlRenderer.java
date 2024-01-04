@@ -10,6 +10,7 @@ import ws.palladian.persistence.json.JsonArray;
 import ws.palladian.persistence.json.JsonDatabase;
 import ws.palladian.persistence.json.JsonObject;
 
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class HtmlRenderer {
     private static final Logger LOGGER = Logger.getLogger(HtmlRenderer.class);
     private final boolean caching;
     private final JsonDatabase jsonDatabase;
-    private static final String TEMPLATES_COLLECTION = "templates";
+    private static final String TEMPLATES_COLLECTION = "html-templates";
 
     private final String htmlRenderingPrompt;
 
@@ -50,6 +51,21 @@ public class HtmlRenderer {
         htmlRenderingPrompt = FileHelper.readFileToString(classLoader.getResourceAsStream("html-render-prompt.txt"));
     }
 
+    private String getHandCraftedHtmlTemplate(JsonObject apiResponse) {
+        String source = apiResponse.tryGetString("source");
+        if (source == null) {
+            return null;
+        }
+        // remove protocol and turn / into _ for file search
+        source = source.replaceAll("https?://", "").replace("/", "_");
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream resourceAsStream = classLoader.getResourceAsStream("html-templates/" + source + ".html");
+        if (resourceAsStream == null) {
+            return null; // no hand-crafted template found
+        }
+        return FileHelper.readFileToString(resourceAsStream);
+    }
+
     public String renderHtml(JsonObject apiResponse) throws Exception {
         return renderHtml(apiResponse, null);
     }
@@ -58,6 +74,18 @@ public class HtmlRenderer {
         if (apiResponse == null) {
             return null;
         }
+        // first check whether we have a hand-crafted HTML template for this response
+        String handCraftedHtmlTemplate = getHandCraftedHtmlTemplate(apiResponse);
+        if (handCraftedHtmlTemplate != null) {
+            if (session != null) {
+                session.getRemote().sendString("found hand-crafted HTML template");
+            }
+            // put data into template
+            handCraftedHtmlTemplate = handCraftedHtmlTemplate.replace("###JSON_DATA###", apiResponse.toString());
+            return handCraftedHtmlTemplate;
+        }
+
+        // if not hand-crafted, try to find a cached template
         JsonObject templateJson = null;
 
         if (caching) {
@@ -72,6 +100,7 @@ public class HtmlRenderer {
                 session.getRemote().sendString("found cached HTML template");
             }
         } else {
+            // if we don't have a template, we ask the LLM to render HTML
             JsonArray messages = new JsonArray();
 
             JsonObject systemMessage = new JsonObject();

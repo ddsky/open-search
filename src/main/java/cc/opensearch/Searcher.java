@@ -30,7 +30,7 @@ public class Searcher {
     private static final Logger LOGGER = Logger.getLogger(Searcher.class);
     private final boolean caching;
     private final JsonDatabase jsonDatabase;
-    private static final String RESPONSES_COLLECTION = "responses";
+    private static final String RESPONSES_COLLECTION = "api-responses";
 
     private final String apiDescriptions;
 

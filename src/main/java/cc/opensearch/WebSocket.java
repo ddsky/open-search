@@ -23,6 +23,7 @@ public class WebSocket {
             String html = HtmlRenderer.getInstance().renderHtml(jsonResponse, session);
             session.getRemote().sendString(html);
         } catch (Exception e) {
+            e.printStackTrace();
             session.getRemote().sendString("Something went wrong");
         }
     }
