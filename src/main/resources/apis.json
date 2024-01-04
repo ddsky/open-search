@@ -191,7 +191,7 @@
   },
   {
     "description": "Search for video games",
-    "url": "https://api.gamebrain.co/games/search?query={SEARCH_QUERY}",
+    "url": "https://api.gamebrain.co/games/search?query={SEARCH_QUERY}&limit=20",
     "authentication_config_key": "gamebrain"
   },
   {
