@@ -14,7 +14,7 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Caveat&family=Indie+Flower&family=Josefin+Sans:ital,wght@0,300;0,400;1,700&family=Poppins:wght@200;400;600;900&display=swap"
             rel="stylesheet">
-    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.5/dist/vue.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- tracking script for opensearch.cc, comment out for self-hosting -->
     <script defer data-domain="opensearch.cc" src="https://plausible.io/js/script.js"></script>
@@ -51,11 +51,11 @@
 <script>
     // if true https and wss will be used, for localhost, probably this should be false
     // prod:
-    const SECURE = true;
-    const API_URL = 'api.opensearch.cc';
+    // const SECURE = true;
+    // const API_URL = 'api.opensearch.cc';
     // dev:
-    // const SECURE = false;
-    // const API_URL = 'localhost:4567';
+    const SECURE = false;
+    const API_URL = 'localhost:4567';
     const app = Vue.createApp({
         data() {
             return {
@@ -190,17 +190,26 @@
             },
             parseHtmlResult(messageContent) {
                 let startPos = messageContent.indexOf('<div id="app">') + 14;
-                const template = messageContent.substring(startPos, messageContent.indexOf('<script>', startPos) - 8);
+                let template = messageContent.substring(startPos, messageContent.indexOf('<script>', startPos) - 8);
                 startPos = messageContent.indexOf('this.jsonData=') + 14
                 const jsonData = messageContent.substring(messageContent.indexOf('this.jsonData=') + 14, messageContent.indexOf('};', startPos) + 1);
+                startPos = messageContent.indexOf('<style>') + 7;
+                const style = messageContent.substring(startPos, messageContent.indexOf('</style>', startPos));
+                console.log(style);
                 console.log(template);
                 console.log(jsonData);
                 console.log(JSON.parse(jsonData));
+
+                // add styles to the template
+                const styleTag = document.createElement('style');
+                styleTag.type = 'text/css';
+                styleTag.innerHTML = style;
+                document.head.appendChild(styleTag);
+
                 this.dynamicComponent = this.createDynamicComponent(template, JSON.parse(jsonData));
             },
             createDynamicComponent(template, jsonData) {
                 return {
-                    // template: template,
                     template: template,
                     data() {
                         return {
