@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<style>
+    .game-container {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        clear: both;
+    }
+    .game-image {
+        max-width: 50%;
+        height: auto;
+    }
+    .game-info {
+        max-width: 45%;
+        float: right;
+    }
+    video, iframe {
+        width: 100%;
+        min-height: 215px;
+        border: none;
+        outline: none;
+    }
+</style>
+<div id="app">
+    <!-- content_start -->
+    <div v-if="jsonData && jsonData.results && jsonData.results.length > 0">
+        <div v-for="game in jsonData.results" :key="game.id" class="game-container">
+            <h2 style="margin:0;margin-bottom:10px"><a :href="'https://gamebrain.co'+game.link" target="_blank">{{ game.name }}</a></h2>
+            <img :src="game.image" :alt="game.name" class="game-image">
+            <div class="game-info">
+                <iframe v-if="game.gameplay" :src="game.gameplay"></iframe>
+                <p v-if="game.short_description">{{game.short_description}}</p>
+                <table>
+                    <tr v-if="game.year">
+                        <td>Year:</td>
+                        <td>{{ game.year }}</td>
+                    </tr>
+                    <tr>
+                        <td>Genre:</td>
+                        <td>{{ game.genre }}</td>
+                    </tr>
+                </table>
+                <br>
+                <a :href="'https://gamebrain.co'+game.link" target="_blank">More Info on gamebrain</a>
+            </div>
+            <div style="clear: both">&nbsp;</div>
+        </div>
+    </div>
+    <div v-else>
+        <p>No results found.</p>
+    </div>
+    <!-- content_end -->
+</div>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                jsonData: null
+            };
+        },
+        mounted() {
+            this.jsonData=###JSON_DATA###;
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
