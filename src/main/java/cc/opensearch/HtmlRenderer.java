@@ -117,7 +117,9 @@ public class HtmlRenderer {
                 session.getRemote().sendString("asking LLM to render HTML");
             }
             htmlResponse = LargeLanguageModelApi.getInstance().chat(messages, 0., new AtomicInteger(), 4095);
-
+            if (session != null) {
+                session.getRemote().sendString("✔");
+            }
             LOGGER.info("LLM returned HTML: " + StringHelper.shortenEllipsis(htmlResponse.toString(), 100));
             LOGGER.debug("LLM returned HTML: " + htmlResponse);
 

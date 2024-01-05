@@ -199,6 +199,10 @@ public class Searcher {
             jsonDatabase.add(RESPONSES_COLLECTION, apiResponse);
         }
 
+        if (session != null) {
+            session.getRemote().sendString("✔");
+        }
+
         LOGGER.info("LLM returned: " + StringHelper.shortenEllipsis(apiResponse.toString(), 100));
         LOGGER.debug("LLM returned: " + apiResponse);
 
