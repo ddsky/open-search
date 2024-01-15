@@ -268,6 +268,26 @@
     "description": "Returns a list of aircrafts that match the given parameters.",
     "url": "https://api.api-ninjas.com/v1/aircraft?manufacturer={MANUFACTURER}&model={MODEL}&engine_type={piston,propjet,jet}&min_speed={MIN_SPEED_IN_KOTS}&min_speed={MAX_SPEED_IN_KOTS}",
     "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Airports API provides vital information on nearly 30,000 airports worldwide including major international airports and small regional airports.",
+    "url": "https://api.api-ninjas.com/v1/airports?name={AIRPORT_NAME}&iata={IATA_CODE}&icao={ICAO_CODE}&country={COUNTRY_CODE}&city={CITY_NAME}&state={STATE_NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Air Quality API provides the latest air quality information for any city or geographic location in the world. It provides not only the wholistic Air Quality Index (AQI) but also concentrations for major pollutants.",
+    "url": "https://api.api-ninjas.com/v1/airquality?city={CITY_NAME}&state={STATE_NAME}&country={COUNTRY_NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Animals API provides interesting scientific facts on thousands of different animal species.",
+    "url": "https://api.api-ninjas.com/v1/animals?name={ANIMAL_NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Returns a random bucket list idea.",
+    "url": "https://api.api-ninjas.com/v1/bucketlist",
+    "authentication_config_key": "apininjas"
   }
 ]
 
