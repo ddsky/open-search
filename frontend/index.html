@@ -61,6 +61,7 @@
             return {
                 // search via 'http' api or 'websocket' API
                 searchMode: 'http',
+                socketUrl: null,
                 socket: null,
                 dynamicComponent: null,
                 loading: false,
@@ -92,22 +93,30 @@
                     'what has happened in London recently?',
                     'best games for batman fans',
                     'wild west shooters',
-                    'show propjet engine airplanes'
+                    'show propjet engine airplanes',
+                    'which airports does Edinburgh have?',
+                    'What\'s the air quality like in Beijing China?',
+                    'tell me something about penguins',
+                    'what should I do before I die?',
                 ]
             }
         },
         mounted() {
-            let websocketUrl = API_URL + "/socket";
+            this.socketUrl = API_URL + "/socket";
             if (SECURE) {
-                websocketUrl = 'wss://' + websocketUrl;
+                this.socketUrl = 'wss://' + this.socketUrl;
             } else {
-                websocketUrl = 'ws://' + websocketUrl;
+                this.socketUrl = 'ws://' + this.socketUrl;
             }
-            this.socket = new WebSocket(websocketUrl);
+            this.socket = new WebSocket(this.socketUrl);
 
-            this.socket.onopen = (event) => {
+            this.socket.onopen = () => {
                 console.log('connected to websocket, switching to websocket mode');
                 this.searchMode = 'websocket';
+            };
+
+            this.socket.onclose = () => {
+                console.log('connection closed, reopening now');
             };
 
             this.socket.onmessage = (event) => {
@@ -160,10 +169,19 @@
             search() {
                 this.loading = true;
                 this.searchLog = null;
-                // console.log(this.searchMode, this.socket.readyState);
+                if (this.searchMode === 'websocket' && this.socket.readyState === 3) {
+                    this.socket = new WebSocket(this.socketUrl);
+                    setTimeout(() => {
+                        this.search();
+                    }, 500);
+                    return;
+                }
                 if (this.searchMode === 'websocket' && this.socket.readyState === 1) {
+                    console.log('search via websocket');
                     this.searchWebSocket();
                 } else {
+                    console.log('search via http');
+                    console.log(this.searchMode, this.socket.readyState);
                     this.searchHttp();
                 }
             },
