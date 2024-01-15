@@ -263,6 +263,11 @@
     "description": "Find a random baby name for boys, girls, or neutral gender",
     "url": "https://api.api-ninjas.com/v1/babynames?gender={boy,girl,neutral}",
     "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Returns a list of aircrafts that match the given parameters.",
+    "url": "https://api.api-ninjas.com/v1/aircraft?manufacturer={MANUFACTURER}&model={MODEL}&engine_type={piston,propjet,jet}&min_speed={MIN_SPEED_IN_KOTS}&min_speed={MAX_SPEED_IN_KOTS}",
+    "authentication_config_key": "apininjas"
   }
 ]
 

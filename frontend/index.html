@@ -51,11 +51,11 @@
 <script>
     // if true https and wss will be used, for localhost, probably this should be false
     // prod:
-    // const SECURE = true;
-    // const API_URL = 'api.opensearch.cc';
+    const SECURE = true;
+    const API_URL = 'api.opensearch.cc';
     // dev:
-    const SECURE = false;
-    const API_URL = 'localhost:4567';
+    // const SECURE = false;
+    // const API_URL = 'localhost:4567';
     const app = Vue.createApp({
         data() {
             return {
@@ -91,7 +91,8 @@
                     'what do groundhogs pretend for this year',
                     'what has happened in London recently?',
                     'best games for batman fans',
-                    'wild west shooters'
+                    'wild west shooters',
+                    'show propjet engine airplanes'
                 ]
             }
         },
@@ -159,7 +160,8 @@
             search() {
                 this.loading = true;
                 this.searchLog = null;
-                if (this.searchMode == 'websocket' && this.socket.readyState == 1) {
+                // console.log(this.searchMode, this.socket.readyState);
+                if (this.searchMode === 'websocket' && this.socket.readyState === 1) {
                     this.searchWebSocket();
                 } else {
                     this.searchHttp();
