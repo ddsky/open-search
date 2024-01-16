@@ -116,7 +116,7 @@
             };
 
             this.socket.onclose = () => {
-                console.log('connection closed, reopening now');
+                console.log('connection to websocket closed');
             };
 
             this.socket.onmessage = (event) => {
