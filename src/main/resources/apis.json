@@ -288,6 +288,21 @@
     "description": "Returns a random bucket list idea.",
     "url": "https://api.api-ninjas.com/v1/bucketlist",
     "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Returns the calories burned per hour and total calories burned according to given parameters for given activities",
+    "url": "https://api.api-ninjas.com/v1/caloriesburned?activity={ACTIVITY_NAME}&weight={WEIGHT_IN_KG}&duration={DURATION_IN_MINUTES}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Celebrity API provides the most popular information, such as net worth, profession, and birthday, on of famous individuals all around the world.",
+    "url": "https://api.api-ninjas.com/v1/celebrity?name={CELEBRITY_NAME}&min_net_worth={MIN_NET_WORTH_IN_USD}&max_net_worth={MAX_NET_WORTH_IN_USD}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Get city data from either a name or population range.",
+    "url": "https://api.api-ninjas.com/v1/city?name={CITY_NAME}&min_population={MIN_POPULATION}&max_population={MAX_POPULATION}",
+    "authentication_config_key": "apininjas"
   }
 ]
 
