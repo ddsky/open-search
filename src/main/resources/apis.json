@@ -221,11 +221,6 @@
   },
   {
     "description": "Search for recipes",
-    "url": "https://api.spoonacular.com/recipes/search?query={SEARCH_QUERY}",
-    "authentication_config_key": "spoonacular"
-  },
-  {
-    "description": "Search for recipes",
     "url": "https://api.spoonacular.com/recipes/complexSearch?query={SEARCH_QUERY}&cuisine={CUISINE}&diet={DIET}&excludeIngredients={EXCLUDE_INGREDIENTS}&intolerances={INTOLERANCES}&number={NUMBER}&minCarbs={MIN_CARBS}&maxCarbs={MAX_CARBS}&minProtein={MIN_PROTEIN}&maxProtein={MAX_PROTEIN}&minCalories={MIN_CALORIES}&maxCalories={MAX_CALORIES}&minFat={MIN_FAT}&maxFat={MAX_FAT}",
     "authentication_config_key": "spoonacular"
   },
@@ -302,6 +297,66 @@
   {
     "description": "Get city data from either a name or population range.",
     "url": "https://api.api-ninjas.com/v1/city?name={CITY_NAME}&min_population={MIN_POPULATION}&max_population={MAX_POPULATION}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Converts a existing currency and amount into a new currency.",
+    "url": "https://api.api-ninjas.com/v1/convertcurrency?have={CURRENCY_CODE}&want={CURRENCY_CODE}&amount={AMOUNT}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Get country data from given parameters. Returns a list of country statistics that satisfy the parameters.",
+    "url": "https://api.api-ninjas.com/v1/country?name={COUNTRY_NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Dictionary API allows you to look up definitions for any English word.",
+    "url": "https://api.api-ninjas.com/v1/dictionary?word={WORD}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Exercises API provides access a comprehensive list of thousands of exercises targeting every major muscle group.",
+    "url": "https://api.api-ninjas.com/v1/exercises?muscle={MUSCLE_GROUP_NAME}&name={EXERCISE_NAME}&type={cardio,olympic_weightlifting,plyometrics,powerlifting,strength,stretching,strongman}&difficulty={beginner,itermediate,expert}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Facts API provides tons of random interesting facts about science, literature, philosophy and other cool topics.",
+    "url": "https://api.api-ninjas.com/v1/facts?limit={NUMBER_OF_FACTS}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Historical Events API allows you search the famous famous events in history. From ancient antiquity to modern times, events from all parts of human civilization are recorded.",
+    "url": "https://api.api-ninjas.com/v1/historicalevents?text={EVENT_NAME}&year={YEAR}&month={MONTH}&day={DAY}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Historical Figures API allows you search the famous (in)famous people in history. From ancient civilization to the current decade, our database contains a wide range of notable individuals from all walks of life.",
+    "url": "https://api.api-ninjas.com/v1/historicalfigures?name={NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Logo API provides logo images for tens of thousands of different companies.",
+    "url": "https://api.api-ninjas.com/v1/logo?name={COMPANY_NAME}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Planets API provides key statistics for thousands of planets and exoplanets discovered in the known universe.",
+    "url": "https://api.api-ninjas.com/v1/planets?name={PLANET_NAME}&min_mass={MIN_MASS_IN_EARTH_MASSES}&max_mass={MAX_MASS_IN_EARTH_MASSES}&min_radius={MIN_RADIUS_IN_EARTH_RADII}&max_radius={MAX_RADIUS_IN_EARTH_RADII}&min_distance={MIN_DISTANCE_IN_LIGHT_YEARS}&max_distance={MAX_DISTANCE_IN_LIGHT_YEARS}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Returns a list of rhyming words for any given word.",
+    "url": "https://api.api-ninjas.com/v1/rhyme?word={WORD}",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "The Riddles API provides quality riddles perfect for entertainment apps.",
+    "url": "https://api.api-ninjas.com/v1/riddles",
+    "authentication_config_key": "apininjas"
+  },
+  {
+    "description": "Get the current date and time by city/state/country, location coordinates (latitude/longitude), or timezone.",
+    "url": "https://api.api-ninjas.com/v1/worldtime?city={CITY_NAME}&state={STATE_NAME}&country={COUNTRY_NAME}",
     "authentication_config_key": "apininjas"
   }
 ]
